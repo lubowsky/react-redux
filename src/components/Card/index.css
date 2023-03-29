@@ -1,0 +1,37 @@
+.card {
+    margin-bottom: 12px;
+}
+
+.closeButton {
+    display: flex;
+    justify-content: end;
+}
+
+.thumbnail span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    padding: 20px;
+}
+
+.thumbnail img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.text {
+    min-height: 40px;
+    font-size: 11px;
+}
+
+.imageContainer {
+     display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imgModal {
+    max-width: 100%;
+    max-height: 100%;
+}

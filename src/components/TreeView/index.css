@@ -1,0 +1,30 @@
+.mainRoot {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: flex-start;
+}
+
+.imageBox {
+    display: flex;
+    flex-direction:row;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+}
+
+.thumbnail {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.imageContainer {
+    display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.imgModal {
+   max-width: 100%;
+   max-height: 100%;
+}
