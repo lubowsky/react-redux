@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import SetCookie from './hooks/setCookie';
-import RemoveCookie from './hooks/removeCookie';
 import GetCookie from './hooks/getCookie';
 
 import Button from 'react-bootstrap/Button';
@@ -19,6 +18,8 @@ import './App.css';
 
 
 function App() {
+  const cookie = GetCookie('deleted') ? JSON.parse(GetCookie('deleted')) : [];
+
   const [posts, setPosts] = useState([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [cardsView, setCardsView] = useState(true);
@@ -36,8 +37,11 @@ function App() {
     setTimeout(async () => {
       const response = await axios.get('http://contest.elecard.ru/frontend_data/catalog.json');
       const newData = response.data.map((post) => ({ ...post, image: post.image.split('/')[1] }));
-      const cookie = GetCookie('deleted') ? JSON.parse(GetCookie('deleted')) : null;
-      setPosts(cookie ? newData.filter(item => !cookie.includes(item)) : newData);
+      
+      const diff =  newData.filter(item => !cookie.some(c => item.timestamp === c.timestamp));
+
+      setPosts(cookie.length > 0 ? diff  : newData);
+
       setDataForTree(convertTree(newData));
       setIsDataLoaded(false);
     }, 1000);
@@ -70,8 +74,8 @@ function App() {
           <Button
             variant="secondary"
             onClick={() => {
-              RemoveCookie('deleted');
               fetchPosts();
+              SetCookie('deleted', []);
             }}
           >
               Get items from bd
