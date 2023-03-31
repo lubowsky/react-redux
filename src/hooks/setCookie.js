@@ -1,9 +1,9 @@
 import Cookies from 'js-cookie';
 
 
-const SetCookie = (cookiename, posts) => {
-  Cookies.set(cookiename, JSON.stringify(posts), {
-    expires: 1,
+const SetCookie = (cookiename, data) => {
+  Cookies.set(cookiename, JSON.stringify(data), {
+    expires: 7,
     secure: true,
     sameSite: 'strict',
     path: '/'

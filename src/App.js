@@ -22,9 +22,10 @@ function App() {
   const [posts, setPosts] = useState([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [cardsView, setCardsView] = useState(true);
+  const [deletedPosts, setDeletedPosts] = useState([]);
   const [dataForTree, setDataForTree] = useState(null);
 
-  useEffect(() => {SetCookie('posts', JSON.stringify(posts))}, [posts]);
+  useEffect(() => {SetCookie('deleted', deletedPosts)}, [deletedPosts]);
 
   useEffect(() => {
     fetchPosts();
@@ -35,7 +36,8 @@ function App() {
     setTimeout(async () => {
       const response = await axios.get('http://contest.elecard.ru/frontend_data/catalog.json');
       const newData = response.data.map((post) => ({ ...post, image: post.image.split('/')[1] }));
-      setPosts(newData);
+      const cookie = GetCookie('deleted') ? JSON.parse(GetCookie('deleted')) : null;
+      setPosts(cookie ? newData.filter(item => !cookie.includes(item)) : newData);
       setDataForTree(convertTree(newData));
       setIsDataLoaded(false);
     }, 1000);
@@ -57,6 +59,7 @@ function App() {
   const currentItems = [...posts].slice(firstItemsIndex, lastItemIndex);
 
   const removePost = post => {
+    setDeletedPosts(deletedPosts.concat([post]));
     setPosts(posts.filter(p => p.timestamp !== post.timestamp));
   };
 
@@ -67,8 +70,8 @@ function App() {
           <Button
             variant="secondary"
             onClick={() => {
+              RemoveCookie('deleted');
               fetchPosts();
-              RemoveCookie('posts');
             }}
           >
               Get items from bd
